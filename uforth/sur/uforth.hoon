@@ -4,8 +4,10 @@
             [%op %mul]     :: math operator *
             [%op %div]     :: math operator /
             [%op %mod]     :: math operator mod
+            ::
             [%op %drop]    :: drop a stack item
             [%op %dup]     :: duplicate a stack item
+            [%op %swap]    :: swap the top two items
             ::
             :: [%op %if]      :: conditional, false means 0, and nonzero values are treated as true
             :: [%op %endif]   :: end of if (replaces "then", like gforth)
@@ -22,5 +24,5 @@
 :: FIXME: only support single precision for now
 +$  num  @rs
 +$  word  @tas
-+$  command  ?(num op word)
++$  token  ?(num op word)
 --

@@ -2,22 +2,17 @@
 ::
 ::    The app is a work-in-progress.
 ::
-/+  shoe, verb, dbug, default-agent
+/-  *uforth
+/+  shoe, verb, dbug, default-agent, uforth
 |%
 +$  versioned-state
   $%  state-0
   ==
-+$  state-0  [%0 =stacks]  :: uforth has two stacks: data and program
++$  state-0  [%0 ds=(list token) cs=(list token)]
 ::
-:: When a word is expanded on-demand, the expanded source is pushed into
-:: the program stack. That way, recursion is naturally handled, where the
-:: program stack mimics a call stack.
-::
-+$  command
-  $?  %demo
-      %row
-      %table
-  ==
+:: Stacks:
+:: 1. ds: the data stack
+:: 2. cs: the control structure stack
 ::
 +$  card  card:shoe
 --
@@ -27,19 +22,19 @@
 %+  verb  |
 %-  agent:dbug
 ^-  agent:gall
-%-  (agent:shoe command)
-^-  (shoe:shoe command)
+%-  (agent:shoe token)
+^-  (shoe:shoe token)
 |_  =bowl:gall
 +*  this  .
     def   ~(. (default-agent this %|) bowl)
-    des   ~(. (default:shoe this command) bowl)
+    des   ~(. (default:shoe this token) bowl)
 ::
 ++  on-init   on-init:def
 ++  on-save   !>(state)
 ++  on-load
   |=  old=vase
   ^-  (quip card _this)
-  [~ this]
+  `this(state !<(versioned-state old))
 ::
 ++  on-poke   on-poke:def
 ++  on-watch  on-watch:def
@@ -51,46 +46,26 @@
 ::
 ++  command-parser
   |=  =sole-id:shoe
-  ^+  |~(nail *(like [? command]))
-  %+  stag  &
-  (perk %demo %row %table ~)
+  ^+  |~(nail *(like [? token]))
+  %+  stag  |
+  (perk %add %sub %div ~)
 ::
 ++  tab-list
   |=  =sole-id:shoe
   ^-  (list [@t tank])
-  :~  ['demo' leaf+"run example command"]
-      ['row' leaf+"print a row"]
-      ['table' leaf+"display a table"]
+  :~  ['uforth' leaf+"may the forth be with you"]
   ==
 ::
 ++  on-command
-  |=  [=sole-id:shoe =command]
+  |=  [=sole-id:shoe =token]
   ^-  (quip card _this)
-  =;  [to=(list _sole-id) fec=shoe-effect:shoe]
-    [[%shoe to fec]~ this]
-  ?-  command
-      %demo
-    :-  ~
-    :-  %sole
-    =/  =tape  "{(scow %p src.bowl)} ran the command"
-    ?.  =(src our):bowl
-      [%txt tape]
-    [%klr [[`%br ~ `%g] [(crip tape)]~]~]
-  ::
-      %row
-    :-  [sole-id]~
-    :+  %row
-      ~[8 27 35 5]
-    ~[p+src.bowl da+now.bowl t+'plenty room here!' t+'less here!']
-  ::
-      %table
-    :-  [sole-id]~
-    :^  %table
-        ~[t+'ship' t+'date' t+'long text' t+'tldr']
-      ~[8 27 35 5]
-    :~  ~[p+src.bowl da+now.bowl t+'plenty room here!' t+'less here!']
-        ~[p+~marzod t+'yesterday' t+'sometimes:\0anewlines' t+'newlines']
-    ==
+  =/  old-stack  ds 
+  =/  new-stack  (weld ds ~[token])
+  ~&  >  "{<(snag 1 (flop old-stack))>}"
+  ~&  >  "{<new-stack>}"
+  :_  this(ds new-stack)
+  :~  [%shoe ~ sole+klr+~[(crip "{<old-stack>} →")]]
+      [%shoe ~ sole+klr+~[[[`%br ~ `%g] (crip "{<new-stack>}") ~]]]
   ==
 ::
 ++  can-connect

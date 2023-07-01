@@ -16,32 +16,54 @@
 :: FIXME: adapt to postfix notation
 ::
 ++  process
-  |=  stack=(list command:uforth)
-  ^-  (list command:uforth)
+  |=  stack=(list token:uforth)
+  ^-  (list token:uforth)
   ~|  "Failure processing operation on stack {<stack>}"
   ?~  stack  !!
-  ?-    `command:uforth`(snag 0 (flop stack))
+  ?-    `token:uforth`(snag 0 (flop stack))
       [%op %add]
-    =/  augend        ;;(@rs `command:uforth`(snag 1 (flop stack)))
-    =/  addend        ;;(@rs `command:uforth`(snag 2 (flop stack)))
+    =/  augend        ;;(@rs `token:uforth`(snag 1 (flop stack)))
+    =/  addend        ;;(@rs `token:uforth`(snag 2 (flop stack)))
     (flop (weld ~[(add:rs augend addend)] (slag 3 (flop stack))))
     ::
       [%op %sub]
-    =/  minuend       ;;(@rs `command:uforth`(snag 1 (flop stack)))
-    =/  subtrahend    ;;(@rs `command:uforth`(snag 2 (flop stack)))
+    =/  minuend       ;;(@rs `token:uforth`(snag 1 (flop stack)))
+    =/  subtrahend    ;;(@rs `token:uforth`(snag 2 (flop stack)))
     (flop (weld ~[(sub:rs minuend subtrahend)] (slag 3 (flop stack))))
     ::
       [%op %mul]
-    =/  multiplicand  ;;(@rs `command:uforth`(snag 1 (flop stack)))
-    =/  multiplier    ;;(@rs `command:uforth`(snag 2 (flop stack)))
+    =/  multiplicand  ;;(@rs `token:uforth`(snag 1 (flop stack)))
+    =/  multiplier    ;;(@rs `token:uforth`(snag 2 (flop stack)))
     (flop (weld ~[(mul:rs multiplicand multiplier)] (slag 3 (flop stack))))
     ::
       [%op %div]
-    =/  numerator     ;;(@rs `command:uforth`(snag 1 (flop stack)))
-    =/  denominator   ;;(@rs `command:uforth`(snag 2 (flop stack)))
+    =/  numerator     ;;(@rs `token:uforth`(snag 1 (flop stack)))
+    =/  denominator   ;;(@rs `token:uforth`(snag 2 (flop stack)))
     (flop (weld ~[(div:rs numerator denominator)] (slag 3 (flop stack))))
     ::
+      [%op %mod]
+    stack
+    ::
+      [%op %dup]
+    stack
+    ::
+      [%op %drop]
+    stack
+    ::
+      [%op %swap]
+    stack
+    ::
+      [%op %col]
+    stack
+    ::
+      [%op %sem]
+    stack
+    ::
       [%op %sho]
+    ~&  >  "{<(snag 1 (flop stack))>}"
+    (flop (slag 1 (flop stack)))
+    ::
+      [%op %see]
     ~&  >  "{<(snag 1 (flop stack))>}"
     (flop (slag 1 (flop stack)))
     ::
