@@ -45,10 +45,11 @@
 ++  on-fail   on-fail:def
 ::
 ++  command-parser
+  :: TODO: allow entering multiple tokens at a time
   |=  =sole-id:shoe
   ^+  |~(nail *(like [? token]))
   %+  stag  |
-  (perk %add %sub %div ~)
+  (cook token ;~(pose num:uforth ops:uforth))
 ::
 ++  tab-list
   |=  =sole-id:shoe
@@ -59,9 +60,10 @@
 ++  on-command
   |=  [=sole-id:shoe =token]
   ^-  (quip card _this)
+  ~&  "invoking command-parser on token: {<token>}"
   =/  old-stack  ds 
   =/  new-stack  (weld ds ~[token])
-  ~&  >  "{<(snag 1 (flop old-stack))>}"
+  :: ~&  >  "{<(snag 1 (flop old-stack))>}"
   ~&  >  "{<new-stack>}"
   :_  this(ds new-stack)
   :~  [%shoe ~ sole+klr+~[(crip "{<old-stack>} →")]]
