@@ -8,11 +8,13 @@
 +$  versioned-state
   $%  state-0
   ==
-+$  state-0  [%0 ds=(list token) cs=(list token)]
++$  state-0  [%0 ds=(list token) cs=(list token) words=(map word (list token))]
 ::
 :: Stacks:
 :: 1. ds: the data stack
 :: 2. cs: the control structure stack
+::
+:: words: the runtime dictionary of words, a map from label -> code
 ::
 +$  card  card:shoe
 --
@@ -60,14 +62,15 @@
 ++  on-command
   |=  [=sole-id:shoe =token]
   ^-  (quip card _this)
-  ~&  "invoking command-parser on token: {<token>}"
-  =/  old-stack  ds 
-  =/  new-stack  (weld ds ~[token])
-  :: ~&  >  "{<(snag 1 (flop old-stack))>}"
-  ~&  >  "{<new-stack>}"
+  ~&  "start processing command: {<token>}"
+  =/  old-stack  (preprocess:uforth ds token)
+  =/  new-stack  (process:uforth old-stack)
   :_  this(ds new-stack)
-  :~  [%shoe ~ sole+klr+~[(crip "{<old-stack>} →")]]
-      [%shoe ~ sole+klr+~[[[`%br ~ `%g] (crip "{<new-stack>}") ~]]]
+  :~  [%shoe ~ sole+klr+~[(crip "ds: {<old-stack>} →")]]
+      [%shoe ~ sole+klr+~[[[`%br ~ `%g] (crip "    {<new-stack>}") ~]]]
+      [%shoe ~ sole+klr+~[(crip "cs: {<old-stack>} →")]]
+      [%shoe ~ sole+klr+~[[[`%br ~ `%g] (crip "    {<new-stack>}") ~]]]
+      [%shoe ~ sole+klr+~[(crip "words: {<words>} →")]]
   ==
 ::
 ++  can-connect

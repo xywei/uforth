@@ -32,6 +32,17 @@
     op-wor
   ==
 ::
+:: preprocess arm:
+:: Apply "compile time" operations, which include matching:
+:: 1. : and ;
+:: 2. if else then
+:: 3. begin until
+::
+++  preprocess
+  |=  [stack=(list token:uforth) token=token:uforth]
+  ^-  (list token:uforth)
+  (weld stack ~[token])
+::
 :: process arm:
 :: apply the operation at the top of the stack and return the new stack
 :: FIXME: adapt to postfix notation
@@ -75,7 +86,7 @@
     stack
     ::
       [%op %clear]
-    stack
+    [~]
     ::
       [%op %wol]
     stack
