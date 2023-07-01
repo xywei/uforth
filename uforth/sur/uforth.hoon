@@ -12,19 +12,17 @@
             [%op %nip]     :: remove the 2nd to last item on the stack
             [%op %tuck]    :: duplicate the 2nd to last item on the stack to the front of the stack
             ::
-            [%op %if]      :: conditional, false means 0, and nonzero values are treated as true
-            [%op %endif]   :: end of if (replaces "then", like gforth)
+            :: [%op %if]      :: conditional, false means 0, and nonzero values are treated as true
+            :: [%op %endif]   :: end of if (replaces "then", like gforth)
+            :: [%op %begin]   :: no-op, just a marker for %again
+            :: [%op %again]   :: jump back to %begin
+            :: [%op %leave]   :: break out of a loop
             ::
             [%op %sho]     :: show the stack (. or .s)
             [%op %see]     :: show the "decompiled" source of a word
             ::
-            [%op %pel]     :: left parenthesis, starting a comment
-            [%op %per]     :: right parenthesis, closing a comment
-            [%op %bas]     :: start a comment until end of line
             [%op %col]     :: start definition of a word
             [%op %sem]     :: end definition of a word
-            [%op %kel]     :: left curly braces, start defining local variables
-            [%op %ker]     :: right curly braces, end of local var definition
         ==
 :: FIXME: only support single precision for now
 +$  num  @rs

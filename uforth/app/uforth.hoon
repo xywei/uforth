@@ -1,6 +1,6 @@
 ::  uforth: a Forth interpreter
 ::
-::    the app is a work-in-progress.
+::    The app is a work-in-progress.
 ::
 /+  shoe, verb, dbug, default-agent
 |%
