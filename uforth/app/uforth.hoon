@@ -4,7 +4,15 @@
 ::
 /+  shoe, verb, dbug, default-agent
 |%
-+$  state-0  [%0 ~]
++$  versioned-state
+  $%  state-0
+  ==
++$  state-0  [%0 =stacks]  :: uforth has two stacks: data and program
+::
+:: When a word is expanded on-demand, the expanded source is pushed into
+:: the program stack. That way, recursion is naturally handled, where the
+:: program stack mimics a call stack.
+::
 +$  command
   $?  %demo
       %row
