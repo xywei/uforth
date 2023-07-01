@@ -8,8 +8,29 @@
 ++  op-sub  (cook |=(p=@ ?:(=('-' p) op+%sub ~)) hep)
 ++  op-mul  (cook |=(p=@ ?:(=('*' p) op+%mul ~)) tar)
 ++  op-div  (cook |=(p=@ ?:(=('/' p) op+%div ~)) fas)
+++  op-mod  (cook |=(p=@ ?:(=('%' p) op+%mod ~)) cen)
+++  op-dup  (cook |=(p=@ ?:(=('dup' p) op+%dup ~)) (jest 'dup'))
+++  op-drop  (cook |=(p=@ ?:(=('drop' p) op+%drop ~)) (jest 'drop'))
+++  op-swap  (cook |=(p=@ ?:(=('swap' p) op+%swap ~)) (jest 'swap'))
+++  op-clear  (cook |=(p=@ ?:(=('clear' p) op+%clear ~)) (jest 'clear'))
 ++  op-sho  (cook |=(p=@ ?:(=('.' p) op+%sho ~)) dot)
-++  ops     ;~(pose op-add op-sub op-mul op-div op-sho)
+++  op-wol  (cook |=(p=@ ?:(=(':' p) op+%wol ~)) col)
+++  op-wor  (cook |=(p=@ ?:(=(';' p) op+%wor ~)) mic)
+++  ops
+  ;~  pose
+    op-add
+    op-sub
+    op-mul
+    op-div
+    op-mod
+    op-dup
+    op-drop
+    op-swap
+    op-clear
+    op-sho
+    op-wol
+    op-wor
+  ==
 ::
 :: process arm:
 :: apply the operation at the top of the stack and return the new stack
@@ -53,17 +74,16 @@
       [%op %swap]
     stack
     ::
-      [%op %col]
+      [%op %clear]
     stack
     ::
-      [%op %sem]
+      [%op %wol]
+    stack
+    ::
+      [%op %wor]
     stack
     ::
       [%op %sho]
-    ~&  >  "{<(snag 1 (flop stack))>}"
-    (flop (slag 1 (flop stack)))
-    ::
-      [%op %see]
     ~&  >  "{<(snag 1 (flop stack))>}"
     (flop (slag 1 (flop stack)))
     ::

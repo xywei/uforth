@@ -5,9 +5,13 @@
             [%op %div]     :: math operator /
             [%op %mod]     :: math operator mod
             ::
-            [%op %drop]    :: drop a stack item
-            [%op %dup]     :: duplicate a stack item
+            [%op %wol]     :: start definition of a word
+            [%op %wor]     :: end definition of a word
+            ::
+            [%op %drop]    :: drop a (data) stack item
+            [%op %dup]     :: duplicate a (data) stack item
             [%op %swap]    :: swap the top two items
+            [%op %clear]   :: clear all
             ::
             :: [%op %if]      :: conditional, false means 0, and nonzero values are treated as true
             :: [%op %endif]   :: end of if (replaces "then", like gforth)
@@ -15,11 +19,7 @@
             :: [%op %again]   :: jump back to %begin
             :: [%op %leave]   :: break out of a loop
             ::
-            [%op %sho]     :: show the stack (. or .s)
-            [%op %see]     :: show the "decompiled" source of a word
-            ::
-            [%op %col]     :: start definition of a word
-            [%op %sem]     :: end definition of a word
+            [%op %sho]     :: show the stack
         ==
 :: FIXME: only support single precision for now
 +$  num  @rs
