@@ -69,27 +69,30 @@
     =/  augend        ;;(@rs `token:uforth`(snag 1 (flop stack)))
     =/  addend        ;;(@rs `token:uforth`(snag 2 (flop stack)))
     [(flop (weld ~[(add:rs augend addend)] (slag 3 (flop stack)))) cstack words]
+    ::
+      [%op %sub]
+    =/  minuend       ;;(@rs `token:uforth`(snag 1 (flop stack)))
+    =/  subtrahend    ;;(@rs `token:uforth`(snag 2 (flop stack)))
+    [(flop (weld ~[(sub:rs minuend subtrahend)] (slag 3 (flop stack)))) cstack words]
+    ::
+      [%op %mul]
+    =/  multiplicand  ;;(@rs `token:uforth`(snag 1 (flop stack)))
+    =/  multiplier    ;;(@rs `token:uforth`(snag 2 (flop stack)))
+    [(flop (weld ~[(mul:rs multiplicand multiplier)] (slag 3 (flop stack)))) cstack words]
+    ::
+      [%op %div]
+    =/  numerator     ;;(@rs `token:uforth`(snag 1 (flop stack)))
+    =/  denominator   ;;(@rs `token:uforth`(snag 2 (flop stack)))
+    [(flop (weld ~[(div:rs numerator denominator)] (slag 3 (flop stack)))) cstack words]
+    ::
+      [%op %sho]
+    ~&  >  "Data stack:    {<ds.vm>}"
+    ~&  >  "Control stack: {<cs.vm>}"
+    ~&  >  "Word list:     {<words.vm>}"
+    vm
     ==
 --
-::      [%op %sub]
-::    =/  minuend       ;;(@rs `token:uforth`(snag 1 (flop stack)))
-::    =/  subtrahend    ;;(@rs `token:uforth`(snag 2 (flop stack)))
-::    [
-::      (flop (weld ~[(sub:rs minuend subtrahend)] (slag 3 (flop stack))))
-::      cstack
-::      words
-::    ]
-::    ::
-::      [%op %mul]
-::    =/  multiplicand  ;;(@rs `token:uforth`(snag 1 (flop stack)))
-::    =/  multiplier    ;;(@rs `token:uforth`(snag 2 (flop stack)))
-::    (flop (weld ~[(mul:rs multiplicand multiplier)] (slag 3 (flop stack))))
     ::
-::      [%op %div]
-::    =/  numerator     ;;(@rs `token:uforth`(snag 1 (flop stack)))
-::    =/  denominator   ;;(@rs `token:uforth`(snag 2 (flop stack)))
-::    (flop (weld ~[(div:rs numerator denominator)] (slag 3 (flop stack))))
-::    ::
 ::      [%op %mod]
 ::    stack
 ::    ::
@@ -110,10 +113,6 @@
 ::    ::
 ::      [%op %wor]
 ::    stack
-::    ::
-::      [%op %sho]
-::    ~&  >  "{<(snag 1 (flop stack))>}"
-::    (flop (slag 1 (flop stack)))
 ::    ::
 ::      @rs
 ::    stack
