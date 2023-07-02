@@ -89,7 +89,7 @@
     ~&  >  "Data stack:    {<ds.vm>}"
     ~&  >  "Control stack: {<cs.vm>}"
     ~&  >  "Word list:     {<words.vm>}"
-    vm
+    [(flop (slag 1 (flop stack))) cstack words]
     ==
 --
     ::
