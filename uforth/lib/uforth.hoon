@@ -56,8 +56,7 @@
 ::
 ++  process
   |=  vm=vm:uforth
-  :: ^-  vm:uforth
-  ^-  stack:uforth
+  ^-  vm:uforth
   =/  stack  ds.vm
   =/  cstack  cs.vm
   =/  words  words.vm
@@ -65,11 +64,11 @@
   ?~  stack  !!
   :: FIXME: use ?- eventually
   :: ?-  `token:uforth`(snag 0 (flop stack))
-  ?+  `token:uforth`(snag 0 (flop stack))  ds.vm
+  ?+  `token:uforth`(snag 0 (flop stack))  vm
       [%op %add]
     =/  augend        ;;(@rs `token:uforth`(snag 1 (flop stack)))
     =/  addend        ;;(@rs `token:uforth`(snag 2 (flop stack)))
-      (flop (weld ~[(add:rs augend addend)] (slag 3 (flop stack))))
+    [(flop (weld ~[(add:rs augend addend)] (slag 3 (flop stack)))) cstack words]
     ==
 --
 ::      [%op %sub]

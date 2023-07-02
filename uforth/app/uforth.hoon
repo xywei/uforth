@@ -64,14 +64,14 @@
   ^-  (quip card _this)
   ~&  "start processing command: {<token>}"
   =/  old-vm  (preprocess:uforth [ds cs words] token)
-  =/  new-stack  (process:uforth old-vm)
-  :_  this(ds new-stack)
+  =/  new-vm  (process:uforth old-vm)
+  :_  this(ds ds.new-vm)
   :~  [%shoe ~ sole+klr+~[(crip "ds: {<ds.old-vm>} →")]]
-      [%shoe ~ sole+klr+~[[[`%br ~ `%g] (crip "    {<new-stack>}") ~]]]
+      [%shoe ~ sole+klr+~[[[`%br ~ `%g] (crip "    {<ds.new-vm>}") ~]]]
       [%shoe ~ sole+klr+~[(crip "cs: {<cs.old-vm>} →")]]
-      [%shoe ~ sole+klr+~[[[`%br ~ `%g] (crip "    {<new-stack>}") ~]]]
+      [%shoe ~ sole+klr+~[[[`%br ~ `%g] (crip "    {<cs.new-vm>}") ~]]]
       [%shoe ~ sole+klr+~[(crip "words: {<words.old-vm>} →")]]
-      [%shoe ~ sole+klr+~[[[`%br ~ `%g] (crip "    {<new-stack>}") ~]]]
+      [%shoe ~ sole+klr+~[[[`%br ~ `%g] (crip "    {<words.new-vm>}") ~]]]
   ==
 ::
 ++  can-connect
