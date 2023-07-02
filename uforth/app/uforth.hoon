@@ -64,7 +64,8 @@
   ^-  (quip card _this)
   ~&  "start processing command: {<token>}"
   =/  old-stack  (preprocess:uforth ds cs words token)
-  =/  new-stack  (process:uforth old-stack)
+  :: =/  new-stack  (process:uforth old-stack)
+  =/  new-stack  (process:uforth ds)
   :_  this(ds new-stack)
   :~  [%shoe ~ sole+klr+~[(crip "ds: {<old-stack>} →")]]
       [%shoe ~ sole+klr+~[[[`%br ~ `%g] (crip "    {<new-stack>}") ~]]]

@@ -40,8 +40,8 @@
 ::
 ++  preprocess
   |=  [stack=stack:uforth cstack=stack:uforth words=dict:uforth token=token:uforth]
-  ^-  (list token:uforth)
-  (weld stack ~[token])
+  ^-  vm:uforth
+  [(weld stack ~[token]) cstack words]
 ::
 :: process arm:
 :: apply the operation at the top of the stack and return the new stack
