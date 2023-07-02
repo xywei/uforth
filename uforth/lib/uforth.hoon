@@ -39,66 +39,82 @@
 :: 3. begin until
 ::
 ++  preprocess
-  |=  [stack=stack:uforth cstack=stack:uforth words=dict:uforth token=token:uforth]
+  |=  [vm=vm:uforth token=token:uforth]
   ^-  vm:uforth
-  [(weld stack ~[token]) cstack words]
+  =/  stack  ds.vm
+  =/  cstack  cs.vm
+  =/  words  words.vm
+  [
+    (weld stack ~[token])
+    cstack
+    words
+  ]
 ::
 :: process arm:
 :: apply the operation at the top of the stack and return the new stack
 :: FIXME: adapt to postfix notation
 ::
 ++  process
-  |=  stack=(list token:uforth)
-  ^-  (list token:uforth)
-  ~|  "Failure processing operation on stack {<stack>}"
+  |=  vm=vm:uforth
+  :: ^-  vm:uforth
+  ^-  stack:uforth
+  =/  stack  ds.vm
+  =/  cstack  cs.vm
+  =/  words  words.vm
+  ~|  "Failure processing operation on vm state {<vm>}"
   ?~  stack  !!
-  ?-    `token:uforth`(snag 0 (flop stack))
+  :: FIXME: use ?- eventually
+  :: ?-  `token:uforth`(snag 0 (flop stack))
+  ?+  `token:uforth`(snag 0 (flop stack))  ds.vm
       [%op %add]
     =/  augend        ;;(@rs `token:uforth`(snag 1 (flop stack)))
     =/  addend        ;;(@rs `token:uforth`(snag 2 (flop stack)))
-    (flop (weld ~[(add:rs augend addend)] (slag 3 (flop stack))))
-    ::
-      [%op %sub]
-    =/  minuend       ;;(@rs `token:uforth`(snag 1 (flop stack)))
-    =/  subtrahend    ;;(@rs `token:uforth`(snag 2 (flop stack)))
-    (flop (weld ~[(sub:rs minuend subtrahend)] (slag 3 (flop stack))))
-    ::
-      [%op %mul]
-    =/  multiplicand  ;;(@rs `token:uforth`(snag 1 (flop stack)))
-    =/  multiplier    ;;(@rs `token:uforth`(snag 2 (flop stack)))
-    (flop (weld ~[(mul:rs multiplicand multiplier)] (slag 3 (flop stack))))
-    ::
-      [%op %div]
-    =/  numerator     ;;(@rs `token:uforth`(snag 1 (flop stack)))
-    =/  denominator   ;;(@rs `token:uforth`(snag 2 (flop stack)))
-    (flop (weld ~[(div:rs numerator denominator)] (slag 3 (flop stack))))
-    ::
-      [%op %mod]
-    stack
-    ::
-      [%op %dup]
-    stack
-    ::
-      [%op %drop]
-    stack
-    ::
-      [%op %swap]
-    stack
-    ::
-      [%op %clear]
-    [~]
-    ::
-      [%op %wol]
-    stack
-    ::
-      [%op %wor]
-    stack
-    ::
-      [%op %sho]
-    ~&  >  "{<(snag 1 (flop stack))>}"
-    (flop (slag 1 (flop stack)))
-    ::
-      @rs
-    stack
-  ==
+      (flop (weld ~[(add:rs augend addend)] (slag 3 (flop stack))))
+    ==
 --
+::      [%op %sub]
+::    =/  minuend       ;;(@rs `token:uforth`(snag 1 (flop stack)))
+::    =/  subtrahend    ;;(@rs `token:uforth`(snag 2 (flop stack)))
+::    [
+::      (flop (weld ~[(sub:rs minuend subtrahend)] (slag 3 (flop stack))))
+::      cstack
+::      words
+::    ]
+::    ::
+::      [%op %mul]
+::    =/  multiplicand  ;;(@rs `token:uforth`(snag 1 (flop stack)))
+::    =/  multiplier    ;;(@rs `token:uforth`(snag 2 (flop stack)))
+::    (flop (weld ~[(mul:rs multiplicand multiplier)] (slag 3 (flop stack))))
+    ::
+::      [%op %div]
+::    =/  numerator     ;;(@rs `token:uforth`(snag 1 (flop stack)))
+::    =/  denominator   ;;(@rs `token:uforth`(snag 2 (flop stack)))
+::    (flop (weld ~[(div:rs numerator denominator)] (slag 3 (flop stack))))
+::    ::
+::      [%op %mod]
+::    stack
+::    ::
+::      [%op %dup]
+::    stack
+::    ::
+::      [%op %drop]
+::    stack
+::    ::
+::      [%op %swap]
+::    stack
+::    ::
+::      [%op %clear]
+::    [~]
+::    ::
+::      [%op %wol]
+::    stack
+::    ::
+::      [%op %wor]
+::    stack
+::    ::
+::      [%op %sho]
+::    ~&  >  "{<(snag 1 (flop stack))>}"
+::    (flop (slag 1 (flop stack)))
+::    ::
+::      @rs
+::    stack
