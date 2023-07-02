@@ -52,7 +52,7 @@
   |=  =sole-id:shoe
   ^+  |~(nail *(like [? token]))
   %+  stag  |
-  (cook token ;~(pose num:uforth ops:uforth))
+  (cook token ;~(pose num:uforth ops:uforth word:uforth))
 ::
 ++  tab-list
   |=  =sole-id:shoe

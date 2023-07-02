@@ -4,6 +4,7 @@
 :: parsing rules
 ::
 ++  num     royl-rs:so
+++  word    (cook crip (star aln))
 ++  op-add  (cook |=(p=@ ?:(=('+' p) op+%add ~)) lus)
 ++  op-sub  (cook |=(p=@ ?:(=('-' p) op+%sub ~)) hep)
 ++  op-mul  (cook |=(p=@ ?:(=('*' p) op+%mul ~)) tar)
@@ -45,7 +46,31 @@
   =/  cstack  cs.vm
   =/  pstack  ps.vm
   =/  words  words.vm
+  ~&  "info: preprocessing token: {<token>}"
   [(weld stack ~[token]) cstack pstack words]
+::  ?:  ?=(token [%op %wol])
+::    ?~  cstack
+::      [stack (weld cstack ~[token]) pstack words]
+::      ~&  "error: cannot define word inside control stack"  !!
+::  ?:  ?=(token word:uforth)  :: differentiate whether the word is an invocation or definition
+::    ?:  =([%op %wol] (rear cstack))
+::      [stack (weld cstack ~[token]) pstack words]
+::      [(weld stack ~[token]) cstack pstack words]
+::  ?:  ?=(token [%op %wor])
+::    ~&  "info: preprocess ;"
+::    ?~  cstack
+::      ~&  "error: no matching : for ;"  !!
+::      =/  op  (snag 1 (flop cstack))
+::      =/  label  (rear cstack)
+::      ?:  !=([%op %wol] op)  ~&  "error: ; cannot match ; with :"  !!
+::        ~&  "add word {<label>}"
+::        [
+::          stack
+::          `stack:uforth`(flop (slag 2 (flop cstack)))
+::          *stack:uforth
+::          words
+::          :: `dict:uforth`(~(put by words) `@tas`label pstack)
+::        ]
 ::
 :: process arm:
 :: apply the operation at the top of the stack and return the new stack
@@ -83,16 +108,23 @@
     =/  denominator   ;;(@rs `token:uforth`(snag 2 (flop stack)))
     [(flop (weld ~[(div:rs numerator denominator)] (slag 3 (flop stack)))) cstack pstack words]
     ::
+      [%op %mod]
+    =/  numerator     ;;(@rs `token:uforth`(snag 1 (flop stack)))
+    =/  denominator   ;;(@rs `token:uforth`(snag 2 (flop stack)))
+    :: FIXME: need to support integer parsing for this to work
+    [(flop (weld ~[(mod numerator denominator)] (slag 3 (flop stack)))) cstack pstack words]
+    ::
+      [%op %clear]
+    *vm:uforth
+    ::
       [%op %sho]
-    ~&  >  "Data stack:    {<ds.vm>}"
+    =/  ds  (flop (slag 1 (flop stack)))  :: avoid showing %sho
+    ~&  >  "Data stack:    {<ds>}"
     ~&  >  "Control stack: {<cs.vm>}"
     ~&  >  "Word list:     {<words.vm>}"
-    [(flop (slag 1 (flop stack))) cstack pstack words]
+    [ds cstack pstack words]
     ==
 --
-    ::
-::      [%op %mod]
-::    stack
 ::    ::
 ::      [%op %dup]
 ::    stack
@@ -102,9 +134,6 @@
 ::    ::
 ::      [%op %swap]
 ::    stack
-::    ::
-::      [%op %clear]
-::    [~]
 ::    ::
 ::      [%op %wol]
 ::    stack
