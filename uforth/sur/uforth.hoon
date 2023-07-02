@@ -27,5 +27,5 @@
 +$  token  ?(num op word)
 +$  stack  (list token)
 +$  dict  (map word stack)
-+$  vm  [ds=stack cs=stack words=dict]
++$  vm  [ds=stack cs=stack ps=stack words=dict]
 --

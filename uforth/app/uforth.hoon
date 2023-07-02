@@ -8,11 +8,12 @@
 +$  versioned-state
   $%  state-0
   ==
-+$  state-0  [%0 ds=stack cs=stack words=dict]
++$  state-0  [%0 ds=stack cs=stack ps=stack words=dict]
 ::
 :: Stacks:
 :: 1. ds: the data stack
 :: 2. cs: the control structure stack
+:: 3. ps: the program stack (not really a stack, but more like a buffer)
 ::
 :: words: the runtime dictionary of words, a map from label -> code
 ::
@@ -63,7 +64,7 @@
   |=  [=sole-id:shoe =token]
   ^-  (quip card _this)
   ~&  "start processing command: {<token>}"
-  =/  old-vm  (preprocess:uforth [ds cs words] token)
+  =/  old-vm  (preprocess:uforth [ds cs ps words] token)
   =/  new-vm  (process:uforth old-vm)
   :_  this(ds ds.new-vm)
   :~  [%shoe ~ sole+klr+~[(crip "ds: {<ds.old-vm>} →")]]
