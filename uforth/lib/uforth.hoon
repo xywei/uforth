@@ -39,7 +39,7 @@
 :: 3. begin until
 ::
 ++  preprocess
-  |=  [stack=(list token:uforth) token=token:uforth]
+  |=  [stack=stack:uforth cstack=stack:uforth words=dict:uforth token=token:uforth]
   ^-  (list token:uforth)
   (weld stack ~[token])
 ::
