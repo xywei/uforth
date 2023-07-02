@@ -8,7 +8,7 @@
 +$  versioned-state
   $%  state-0
   ==
-+$  state-0  [%0 ds=(list token) cs=(list token) words=(map word (list token))]
++$  state-0  [%0 ds=stack cs=stack words=dict]
 ::
 :: Stacks:
 :: 1. ds: the data stack

@@ -25,4 +25,6 @@
 +$  num  @rs
 +$  word  @tas
 +$  token  ?(num op word)
++$  stack  (list token)
++$  dict  (map word stack)
 --
