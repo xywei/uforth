@@ -48,7 +48,8 @@
   =/  words  words.vm
   ~&  "info: preprocessing token: {<token>}"
   [(weld stack ~[token]) cstack pstack words]
-::  ?:  ?=(token [%op %wol])
+:: FIXME: why does the following line give a type error?
+:: ?:  ?=([%op %wol] token)
 ::    ?~  cstack
 ::      [stack (weld cstack ~[token]) pstack words]
 ::      ~&  "error: cannot define word inside control stack"  !!
@@ -71,6 +72,7 @@
 ::          words
 ::          :: `dict:uforth`(~(put by words) `@tas`label pstack)
 ::        ]
+::    [(weld stack ~[token]) cstack pstack words]
 ::
 :: process arm:
 :: apply the operation at the top of the stack and return the new stack
